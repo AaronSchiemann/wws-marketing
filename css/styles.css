@@ -392,25 +392,31 @@ h3{ font-size: clamp(1.2rem, 1.5vw + 0.8rem, 2rem); }
 
 
 /* Gif-Carousel */
-
-
 .carousel-wrapper{
   width: 100%;
-  min-height: 60vh;
+  /* statt fixer Mindesthöhe lieber moderat deckeln */
+  min-height: min(60vh, 60vmin);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  perspective: 900px;               /* 3D bleibt vorhanden */
+
+  /* Perspektive an kleinere Kante koppeln und kappen */
+  perspective: clamp(600px, 80vmin, 1000px);
   perspective-origin: 50% 50%;
 }
 
 .carousel-inner{
-  --w: 14vh;                        /* größer */
-  --h: 24vh;                        /* größer */
-  --translateZ: calc((var(--w) + var(--h)) * 1.0); /* Abstand Kreis */
-  --rotateX: 0deg;                  /* keine Neigung mehr */
+  /* KEIN vh mehr -> vmin + clamps */
+  --w: clamp(120px, 14vmin, 220px);
+  --h: clamp(200px, 24vmin, 360px);
+
+  /* Abstand des Rings ebenfalls gedeckelt */
+  --translateZ: clamp(320px, calc((var(--w) + var(--h)) * 1.0), 700px);
+
+  --rotateX: 0deg;
+
   position: absolute;
   width: var(--w);
   height: var(--h);
@@ -450,13 +456,12 @@ h3{ font-size: clamp(1.2rem, 1.5vw + 0.8rem, 2rem); }
       rgba(var(--color-card),0.9) 100%);
 }
 
-/* falls du Videos reinpackst */
 .carousel-img > video{
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  pointer-events: none; /* keine Mausfänge im Karussell */
+  pointer-events: none;
 }
 
 
@@ -739,6 +744,18 @@ h3{ font-size: clamp(1.2rem, 1.5vw + 0.8rem, 2rem); }
 
 
 /* ###=### Responsives Finetuning ###=### */
+/* Ultrawide */
+@media (min-aspect-ratio: 21/9), (min-width: 2000px) {
+  .carousel-inner{
+    --w: clamp(120px, 12vmin, 200px);
+    --h: clamp(200px, 20vmin, 320px);
+    --translateZ: clamp(300px, calc((var(--w) + var(--h)) * 0.95), 620px);
+  }
+  .carousel-wrapper{
+    perspective: clamp(600px, 70vmin, 900px);
+  }
+}
+
 @media (max-width: 1200px) {
   .container {
     max-width: 90%; /* statt fester Pixel */
