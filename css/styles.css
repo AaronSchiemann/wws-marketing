@@ -34,7 +34,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  backdrop-filter: blur(6px);        /* sorgt für einen Glas-Effekt */
+  backdrop-filter: blur(6px);        /* Glas-Effekt */
   background-color: rgba(0, 0, 0, 0.8); /* halbtransparentes Schwarz */
   color: white;
   padding: 16px 32px;
@@ -45,6 +45,17 @@
   z-index: 1000;
 }
 
+/* versteckte Checkbox fürs CSS-Toggle */
+.nav-toggle-checkbox {
+  display: none;
+}
+
+/* Desktop: Hamburger erst mal ausblenden */
+.nav-toggle {
+  display: none;
+}
+
+/* Navigation Desktop */
 .nav-center {
   display: flex;
   justify-content: left;
@@ -77,7 +88,6 @@
   padding: 8px 20px;
   color: var(--color);
   cursor: pointer;
-  /* use position: relative; so that BG is only for .btn */
   position: relative;
   isolation: isolate;
   display: inline-grid;
@@ -86,12 +96,12 @@
   text-transform: uppercase;
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.6);
   clip-path: polygon(
-    /* Top-left */ 0% var(--curve-size),
+    0% var(--curve-size),
     var(--curve-size) 0,
-    /* top-right */ 100% 0,
+    100% 0,
     100% calc(100% - var(--curve-size)),
-    /* bottom-right 1 */ calc(100% - var(--curve-size)) 100%,
-    /* bottom-right 2 */ 0 100%
+    calc(100% - var(--curve-size)) 100%,
+    0 100%
   );
   transition: color 250ms;
 }
@@ -128,33 +138,30 @@
   background: var(--bg);
   z-index: -1;
   clip-path: polygon(
-    /* Top-left */ var(--border-width)
+    var(--border-width)
       calc(var(--curve-size) + var(--border-width) * 0.5),
     calc(var(--curve-size) + var(--border-width) * 0.5) var(--border-width),
-    /* top-right */ calc(100% - var(--border-width)) var(--border-width),
+    calc(100% - var(--border-width)) var(--border-width),
     calc(100% - var(--border-width))
       calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
-    /* bottom-right 1 */
-      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
+    calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
       calc(100% - var(--border-width)),
-    /* bottom-right 2 */ var(--border-width) calc(100% - var(--border-width))
+    var(--border-width) calc(100% - var(--border-width))
   );
   transition: clip-path 500ms;
 }
 
 .nav-btn:where(:hover, :focus)::after {
   clip-path: polygon(
-    /* Top-left */ calc(100% - var(--border-width))
-      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
-    calc(100% - var(--border-width)) var(--border-width),
-    /* top-right */ calc(100% - var(--border-width)) var(--border-width),
     calc(100% - var(--border-width))
       calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
-    /* bottom-right 1 */
-      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
+    calc(100% - var(--border-width)) var(--border-width),
+    calc(100% - var(--border-width)) var(--border-width),
+    calc(100% - var(--border-width))
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
+    calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
       calc(100% - var(--border-width)),
-    /* bottom-right 2 */
-      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
+    calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
       calc(100% - var(--border-width))
   );
   transition: 0.5s;
@@ -162,6 +169,81 @@
 
 .nav-btn:where(:hover, :focus) {
   color: #fff;
+}
+
+/* #### Mobile Styles #### */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 30px 30px;
+    justify-content: space-between;
+  }
+
+  /* Hamburger sichtbar machen */
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 26px;
+    height: 18px;
+    margin-right: 12px;
+    cursor: pointer;
+  }
+
+  .nav-toggle span {
+    display: block;
+    height: 2px;
+    border-radius: 999px;
+    background: #ffffff;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Dropdown-Menü */
+  .nav-center {
+    position: absolute;
+    top: var(--navbar-height);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.95);
+    padding: 16px 24px 24px;
+    gap: 12px;
+    transform: translateY(-200%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .navbar nav a {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  /* CTA etwas kompakter auf Mobile */
+  .nav-btn {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    margin-left: 0;
+  }
+
+  /* Wenn Checkbox aktiv → Menü ausklappen */
+  .nav-toggle-checkbox:checked ~ .nav-center {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Hamburger zu X animieren */
+  .nav-toggle-checkbox:checked + .nav-toggle span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .nav-toggle-checkbox:checked + .nav-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle-checkbox:checked + .nav-toggle span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
 }
 /* #### Navbar Ende #### */
 
@@ -508,7 +590,7 @@ h4{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 2rem); }
 
   /* Bild + Overlay als kombinierter Hintergrund */
   background:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55)),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85)),
     var(--bg) center/cover no-repeat;
 
   color: #ff568e;
@@ -941,6 +1023,49 @@ h4{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 2rem); }
   }
 }
 
+
+/* Mobile kompakt */
+@media (max-width: 768px) {
+
+  .carousel-wrapper{
+    min-height: 42vh;
+    padding-block: 1.25rem;
+    perspective: 650px;
+  }
+
+  .carousel-inner{
+    /* Karten bewusst kleiner halten */
+    --w: clamp(130px, 50vw, 170px);
+    --h: calc(var(--w) * 1.15);
+
+    /* moderater Ringradius -> kein Überlappen, Größe bleibt im Rahmen */
+    --translateZ: clamp(240px, calc(var(--w) * 1.8), 360px);
+
+    top: 30%;
+    left: calc(50% - (var(--w) / 2));
+  }
+
+  .carousel-card{
+    border-radius: 18px;
+  }
+}
+
+/* Extra-klein: sehr schmale Phones */
+@media (max-width: 480px) {
+
+  .carousel-wrapper{
+    min-height: 38vh;
+    padding-block: 1rem;
+  }
+
+  .carousel-inner{
+    --w: clamp(120px, 60vw, 150px);
+    --h: calc(var(--w) * 1.05);
+    --translateZ: clamp(220px, calc(var(--w) * 1.7), 320px);
+
+    top: 32%;
+  }
+}
 
 /* Footer */
 @media (max-width: 600px) {

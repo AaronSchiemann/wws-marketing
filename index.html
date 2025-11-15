@@ -48,12 +48,25 @@
 </head>
 <body>
   <header class="navbar">
+    <!-- Hidden Toggle fürs Mobile-Menü -->
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
+
+    <!-- Hamburger-Icon -->
+    <label for="nav-toggle" class="nav-toggle" aria-label="Navigation umschalten">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+
     <nav class="nav-center">
       <a href="index.html">Homepage</a>
       <a href="solutions.html">Solutions</a>
       <a href="kontakt.html">Kontakt</a>
     </nav>
-      <button class="nav-btn" onclick="window.location.href='/kontakt.html'">Termin vereinbaren</button>
+
+    <button class="nav-btn" onclick="window.location.href='/kontakt.html'">
+      Termin vereinbaren
+    </button>
   </header>
 
   <main>
