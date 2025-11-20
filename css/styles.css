@@ -285,15 +285,16 @@ h1,h2{
   line-height:1.5;
 }
 
-h1{ font-size: clamp(2.2rem, 4vw + 1rem, 4.5rem); padding-top: 0.1vw; }
-h2{ font-size: clamp(1.2rem, 1.5vw + 0.8rem, 2rem); margin-top: 1.5rem; padding-bottom: 1vw; }
-h3{ font-size: clamp(1.2rem, 1.5vw + 0.8rem, 2rem); }
-h4{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 2rem); }
+h1{ font-size: clamp(3.2rem, 4vw + 1rem, 4.5rem); padding-top: 0.1vw; }
+h2{ font-size: clamp(2.2rem, 1.5vw + 0.8rem, 2rem); margin-top: 1.5rem; padding-bottom: 1vw; }
+h3{ font-size: clamp(2.2rem, 1.5vw + 0.8rem, 2rem); }
+h4{ font-size: clamp(2.0rem, 1.5vw + 0.8rem, 2rem); }
+p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 
 .lead{
-  margin: 1.25rem auto 2vh;
+  margin: 0 auto 2vh;
   max-width: 70ch;
-  font-size: clamp(1.1rem, 0.5vw + 0.85rem, 1.1rem);
+  font-size: clamp(1.2rem, 1vw + 0.85rem, 1.5rem);
   color: #eaeaea;
 }
 
@@ -494,7 +495,6 @@ h4{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 2rem); }
 /* Gif-Carousel */
 .carousel-wrapper{
   width: 100%;
-  /* statt fixer Mindesthöhe lieber moderat deckeln */
   min-height: min(60vh, 60vmin);
   position: relative;
   display: flex;
@@ -503,19 +503,14 @@ h4{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 2rem); }
   overflow: hidden;
   z-index: 80;
 
-  /* Perspektive an kleinere Kante koppeln und kappen */
   perspective: clamp(600px, 80vmin, 1000px);
   perspective-origin: 50% 50%;
 }
 
 .carousel-inner{
-  /* KEIN vh mehr -> vmin + clamps */
   --w: clamp(120px, 14vmin, 220px);
   --h: clamp(200px, 24vmin, 360px);
-
-  /* Abstand des Rings ebenfalls gedeckelt */
   --translateZ: clamp(320px, calc((var(--w) + var(--h)) * 1.0), 700px);
-
   --rotateX: 0deg;
 
   position: absolute;
@@ -547,23 +542,37 @@ h4{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 2rem); }
   will-change: transform;
 }
 
+/* Der Rahmen / Glow-Container */
 .carousel-img{
+  position: relative;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  overflow: hidden;
+}
+
+/* Glow-Hintergrund für alle Karten (auch die ohne Bild) */
+.carousel-img::before{
+  content: "";
+  position: absolute;
+  inset: 0;
   background:
     radial-gradient(circle,
       rgba(var(--color-card),0.2) 0%,
       rgba(var(--color-card),0.6) 80%,
       rgba(var(--color-card),0.9) 100%);
+  z-index: 1;
 }
 
+/* Bild & Video passen sich dem Element an */
+.carousel-img img,
 .carousel-img > video{
+  position: relative;
+  z-index: 2;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;   /* oder 'contain', wenn nichts beschnitten werden soll */
   display: block;
-  pointer-events: none;
+  pointer-events: none; /* optional für Videos */
 }
 
 
@@ -640,6 +649,132 @@ h4{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 2rem); }
 
 
 
+
+/* Solution Product Cards */
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: calc(960px * 999 - 100% * 999);
+  gap: 3em;
+}
+
+.product-heading {
+  margin-top: 10vh;
+  font-size: clamp(2.2rem, 1.5vw + 1rem, 2.5rem);
+}
+
+.product-card {
+  max-width: 500px;
+  min-width: 300px;
+  min-height: 500px;
+  position: relative;
+  overflow: hidden;
+  background-color: #000;
+  border-radius: 15px;
+  padding: 30px;
+  z-index: 0;
+}
+
+/* --- Inhaltsebene --- */
+.product-card h3,
+.product-card p {
+  position: relative;
+  z-index: 3; /* Inhalt immer oben */
+}
+
+.product-card h3 {
+  color: #ff5757;
+  margin-bottom: 1em;
+}
+
+/* --- Animationsebene (Rand) --- */
+.product-card::before {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 130%;
+  background-image: linear-gradient(180deg, #E65A50, #FF6F61);
+  animation: rotBGimg 3s linear infinite;
+  transition: all 0.2s linear;
+  z-index: 0;
+}
+
+/* --- Hintergrundfläche --- */
+.product-card::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  background: #07182E;
+  border-radius: 15px;
+  z-index: 1;
+}
+
+@keyframes rotBGimg {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ===== PREMIUM SPARKLES ===== */
+/* unsichtbare Layerfläche für die Funken */
+.product-card.premium .sparkles {
+  position: absolute;
+  inset: 5px;
+  border-radius: 15px;
+  pointer-events: none;
+  z-index: 2; /* über Hintergrund, unter Text */
+}
+
+/* gemeinsame Basis für beide Sparkle-Gruppen */
+.product-card.premium .sparkles::before,
+.product-card.premium .sparkles::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffeaa7 0%, #ffd700 40%, transparent 70%);
+  opacity: 0;
+  box-shadow:
+    0 0 0 0 #ffd700,
+    12px 4px 0 0 #fff3b0,
+    20px -6px 0 0 #ffeaa7,
+    -8px 10px 0 0 #fff8dc,
+    15px 14px 0 0 #ffd700;
+  animation: sparkle 2s infinite ease-in-out;
+}
+
+/* oben rechts */
+.product-card.premium .sparkles::before {
+  top: 8px;
+  right: 14px;
+}
+
+/* unten links, leicht zeitversetzt */
+.product-card.premium .sparkles::after {
+  bottom: 8px;
+  left: 14px;
+  animation-delay: 1s;
+}
+
+/* Funken erscheinen / verschwinden */
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  70% {
+    opacity: 0.8;
+    transform: scale(0.9) translateY(-2px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.4) translateY(-4px);
+  }
+}
 
 
 
