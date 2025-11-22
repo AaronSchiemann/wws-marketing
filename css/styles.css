@@ -310,16 +310,6 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
   box-decoration-break: clone;
 }
 
-.gradient-header::before{
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  color:#fff;
-  filter: blur(10px);
-  transform: translate(14px,14px);
-  opacity:.07;
-  z-index:0;
-}
 
 
 /* ## Hero ## */
@@ -363,7 +353,7 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 }
 
 .block::before,
-.block::after{
+.block::after {
   content: "";
   position: absolute;
   left: -2px;
@@ -372,13 +362,13 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
   height: calc(100% + 4px);
   border-radius: inherit;
   background: linear-gradient(45deg,
-  #1C2230 0%,      /* dunkles Blau für Tiefe */
-  #E63E35 15%,     /* kräftiges Rot-Coral */
-  #FF6F61 35%,     /* klassisches Coral */
-  #FFA68A 60%,     /* heller, warmer Akzent */
-  #FFD98E 80%,     /* goldener Lichtreflex */
-  #E65A50 100%     /* Rückkehr zum Coralton */
-);
+    rgba(28, 34, 48, 0.5) 0%,    /* #1C2230 */
+    rgba(230, 62, 53, 0.5) 15%,  /* #E63E35 */
+    rgba(255, 111, 97, 0.5) 35%, /* #FF6F61 */
+    rgba(255, 166, 138, 0.5) 60%,/* #FFA68A */
+    rgba(255, 217, 142, 0.5) 80%,/* #FFD98E */
+    rgba(230, 90, 80, 0.5) 100%  /* #E65A50 */
+  );
   background-size: 500%;
   animation: steam 20s linear infinite;
   z-index: 0;
@@ -642,23 +632,32 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 
 
 /* Solution Product Cards */
+.product-wrapper-bg {
+  background: #111;           /* dein gewünschter Hintergrund */
+  padding: 30px 30px;         /* Abstand nach innen */
+  border-radius: 50px;        /* optional */
+  margin-top: 2vh;
+  margin-bottom: 3vh;
+  z-index: 1;
+}
+
 .products {
   display: flex;
   flex-wrap: wrap;
-  flex-basis: calc(960px * 999 - 100% * 999);
+  justify-content: center;
   gap: 3em;
+  z-index: 1;
 }
-
-
 
 .product-heading {
-  margin-top: 5vh;
-  font-size: clamp(2.2rem, 1.5vw + 1rem, 2.5rem);
+  font-size: clamp(2.2rem, 1.5vw + 1rem, 3rem);
+  z-index: 1;
 }
 
-.products > .btn {
-  display: block;
-  margin: 0 auto 6vh;
+.product-wrapper-bg .btn {
+  width: auto;
+  align-self: center;
+  margin-top: 40px;
 }
 
 .product-card {
@@ -669,19 +668,38 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
   background-color: #000;
   border-radius: 15px;
   padding: 30px;
-  z-index: 0;
+  z-index: 1;
 }
 
 /* --- Inhaltsebene --- */
-.product-card h3,
 .product-card p {
   position: relative;
-  z-index: 3; /* Inhalt immer oben */
+  z-index: 4;
+  padding: 14px 0;
 }
 
+/* Linie mittig zwischen den Absätzen */
+.product-card p::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -7px;
+  width: 70%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Erste & letzte Zeile ohne Linie (optional, falls du das willst) */
+.product-card p:last-of-type::after {
+  display: none;
+}
+
+/* Überschrift */
 .product-card h3 {
+  position: relative;
+  z-index: 4;        /* wichtig, damit sie über dem Overlay liegt */
   color: #ff5757;
-  margin-bottom: 1em;
 }
 
 /* --- Animationsebene (Rand) --- */
@@ -695,7 +713,7 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
   transform: translate(-50%, -50%);
   animation: rotBGimg 5s linear infinite;
   transition: all 0.5s linear;
-  z-index: 0;
+  z-index: 1;
 }
 
 /* Varianten für den animierten Rahmen */
@@ -726,7 +744,7 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
     #353535 60px
   );
   border-radius: 15px;
-  z-index: 1;
+  z-index: 2;
 }
 
 @keyframes rotBGimg {
@@ -739,64 +757,61 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 }
 
 /* ===== PREMIUM SPARKLES ===== */
-/* unsichtbare Layerfläche für die Funken */
 .product-card.premium .sparkles {
   position: absolute;
-  inset: 5px;
-  border-radius: 25px;
-  pointer-events: none;
-  z-index: 2; /* über Hintergrund, unter Text */
-}
-
-/* gemeinsame Basis für beide Sparkle-Gruppen */
-.product-card.premium .sparkles::before,
-.product-card.premium .sparkles::after {
-  content: "";
-  position: absolute;
-  width: 5px;
-  height: 4px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #ffeaa7 0%, #ffd700 40%, transparent 70%);
-  opacity: 0;
-  box-shadow:
-    0 0 0 0 #ffd700,
-    12px 4px 0 0 #fff3b0,
-    20px -6px 0 0 #ffeaa7,
-    -8px 10px 0 0 #fff8dc,
-    15px 14px 0 0 #ffd700;
-  animation: sparkle 3s infinite ease-in-out;
-}
-
-/* oben rechts */
-.product-card.premium .sparkles::before {
   top: 8px;
   right: 14px;
+  width: 40px;   /* anpassen */
+  height: 40px;  /* anpassen */
+  pointer-events: none;
+  z-index: 3;
+  background-image: url("/img/sparkles.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  animation: sparkle-pulse 2.2s ease-in-out infinite;
 }
 
-/* unten links, leicht zeitversetzt */
-.product-card.premium .sparkles::after {
-  bottom: 8px;
-  left: 14px;
-  animation-delay: 1s;
+.product-card.standard .sparkles {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  width: 40px;   /* anpassen */
+  height: 40px;  /* anpassen */
+  pointer-events: none;
+  z-index: 3;
+  background-image: url("/img/sparkles.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  animation: sparkle-pulse 2.2s ease-in-out infinite;
 }
 
-/* Funken erscheinen / verschwinden */
-@keyframes sparkle {
+.product-card.basic .sparkles {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  width: 40px;   /* anpassen */
+  height: 40px;  /* anpassen */
+  pointer-events: none;
+  z-index: 3;
+  background-image: url("/img/sparkles.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  animation: sparkle-pulse 2.2s ease-in-out infinite;
+}
+
+
+@keyframes sparkle-pulse {
   0% {
-    opacity: 0;
-    transform: scale(0.5) translateY(4px);
+    transform: scale(1);
   }
-  40% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-  70% {
-    opacity: 0.8;
-    transform: scale(0.9) translateY(-2px);
+  50% {
+    transform: scale(1.12); /* leichtes Wachstum */
   }
   100% {
-    opacity: 0;
-    transform: scale(0.4) translateY(-4px);
+    transform: scale(1);
   }
 }
 
@@ -1013,66 +1028,6 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 
 
 
-/* Ladebalken */
-.ladebalken {
-  position: absolute;
-  left: 50%;
-  border-radius: 50%;
-  height: 96px;
-  width: 96px;
-  animation: rotate_3922 1.2s linear infinite;
-  background-color: #9b59b6;
-  background-image: linear-gradient(#ff002b, #ff7300, #fbff00);
-}
-
-.ladebalken span {
-  position: relative;
-  border-radius: 50%;
-  height: 100%;
-  width: 100%;
-  background-color: #9b59b6;
-  background-image: linear-gradient(#9b59b6, #84cdfa, #5ad1cd);
-}
-
-.ladebalken span:nth-of-type(1) {
-  filter: blur(5px);
-}
-
-.ladebalken span:nth-of-type(2) {
-  filter: blur(10px);
-}
-
-.ladebalken span:nth-of-type(3) {
-  filter: blur(25px);
-}
-
-.ladebalken span:nth-of-type(4) {
-  filter: blur(50px);
-}
-
-.ladebalken::after {
-  content: "";
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  background-color: #fff;
-  border: solid 5px #ffffff;
-  border-radius: 50%;
-}
-
-@keyframes rotate_3922 {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
-
 
 
 
@@ -1137,58 +1092,6 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 }
 
 
-/* Background Animation */
-/* Dezente, aber sichtbare Micro-Lights */
-.bg-lights {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-/* einzelne Lichtflecken */
-.bg-lights .light {
-  position: absolute;
-  width: 20vw;                 /* etwas größer */
-  height: 20vw;
-  background: radial-gradient(circle,
-              rgba(107, 101, 99, 0.1) 0%,   /* Coral-Ton, deutlich sichtbarer */
-              rgba(78, 73, 72, 0) 75%);
-  opacity: 0;
-  filter: blur(18px);          /* weicher Glow */
-  mix-blend-mode: screen;
-  animation: lightFloat 10s ease-in-out infinite;
-}
-
-/* verteilt über die Seite */
-.bg-lights .light:nth-child(1) { top: 12%; left: 18%; animation-delay: 0s; }
-.bg-lights .light:nth-child(2) { top: 30%; left: 72%; animation-delay: 2s; }
-.bg-lights .light:nth-child(3) { top: 55%; left: 12%; animation-delay: 5s; }
-.bg-lights .light:nth-child(4) { top: 12%; left: 20%; animation-delay: 7s; }
-.bg-lights .light:nth-child(5) { top: 22%; left: 85%; animation-delay: 6s; }
-.bg-lights .light:nth-child(6) { top: 62%; left: 30%; animation-delay: 5s; }
-.bg-lights .light:nth-child(7) { top: 42%; left: 35%; animation-delay: 3s; }
-
-
-@keyframes lightFloat {
-  0%, 60%, 100% {
-    opacity: 0;
-    transform: translate(0, 0);
-  }
-  70% {
-    opacity: 0.35;             /* Peak – hier wird's sichtbar */
-    transform: translate(10px, -10px);
-  }
-  80% {
-    opacity: 0.20;
-    transform: translate(22px, -18px);
-  }
-  90% {
-    opacity: 0.08;
-    transform: translate(30px, -25px);
-  }
-}
 
 
 
