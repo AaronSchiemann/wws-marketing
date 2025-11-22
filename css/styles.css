@@ -9,21 +9,12 @@
   --btn-fg: #fff;
   --btn-bg: #0f1111;
 
-
-
   --navbar-height: 4vw;
 }
 
 
 
 /* !!!! Experimental Section !!!! */
-
-
-
-
-
-
-
 
 
 
@@ -286,7 +277,7 @@ h1,h2{
 }
 
 h1{ font-size: clamp(3.2rem, 4vw + 1rem, 4.5rem); padding-top: 0.1vw; }
-h2{ font-size: clamp(2.2rem, 1.5vw + 0.8rem, 2rem); margin-top: 1.5rem; padding-bottom: 1vw; }
+h2{ font-size: clamp(2.5rem, 2vw + 0.8rem, 4rem); margin-top: 1.5rem; padding-bottom: 1vw; }
 h3{ font-size: clamp(2.2rem, 1.5vw + 0.8rem, 2rem); }
 h4{ font-size: clamp(2.0rem, 1.5vw + 0.8rem, 2rem); }
 p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
@@ -658,15 +649,21 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
   gap: 3em;
 }
 
+
+
 .product-heading {
-  margin-top: 10vh;
+  margin-top: 5vh;
   font-size: clamp(2.2rem, 1.5vw + 1rem, 2.5rem);
 }
 
+.products > .btn {
+  display: block;
+  margin: 0 auto 6vh;
+}
+
 .product-card {
-  max-width: 500px;
-  min-width: 300px;
-  min-height: 500px;
+  max-width: 350px;
+  min-width: 100px;
   position: relative;
   overflow: hidden;
   background-color: #000;
@@ -691,12 +688,31 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 .product-card::before {
   content: '';
   position: absolute;
-  width: 100px;
-  height: 130%;
-  background-image: linear-gradient(180deg, #E65A50, #FF6F61);
-  animation: rotBGimg 3s linear infinite;
-  transition: all 0.2s linear;
+  top: 50%;
+  left: 50%;
+  width: 60%;      /* schmaler Balken */
+  height: 180%;    /* länger als die Card, damit er in allen Winkeln reicht */
+  transform: translate(-50%, -50%);
+  animation: rotBGimg 5s linear infinite;
+  transition: all 0.5s linear;
   z-index: 0;
+}
+
+/* Varianten für den animierten Rahmen */
+
+/* BASIC: Rot / Dunkelrot */
+.product-card.basic::before {
+  background-image: linear-gradient(180deg, #8f8f8f, #646464);
+}
+
+/* STANDARD: Coral (Standard-Design) */
+.product-card.standard::before {
+  background-image: linear-gradient(180deg, #E65A50, #ff776a);
+}
+
+/* PREMIUM: Gold */
+.product-card.premium::before {
+  background-image: linear-gradient(180deg, #ffdd55, #ffae00);
 }
 
 /* --- Hintergrundfläche --- */
@@ -704,14 +720,22 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
   content: '';
   position: absolute;
   inset: 5px;
-  background: #07182E;
+  background: repeating-linear-gradient(
+    120deg,
+    #2e2e2e,
+    #353535 60px
+  );
   border-radius: 15px;
   z-index: 1;
 }
 
 @keyframes rotBGimg {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 /* ===== PREMIUM SPARKLES ===== */
@@ -719,7 +743,7 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 .product-card.premium .sparkles {
   position: absolute;
   inset: 5px;
-  border-radius: 15px;
+  border-radius: 25px;
   pointer-events: none;
   z-index: 2; /* über Hintergrund, unter Text */
 }
@@ -729,7 +753,7 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 .product-card.premium .sparkles::after {
   content: "";
   position: absolute;
-  width: 4px;
+  width: 5px;
   height: 4px;
   border-radius: 50%;
   background: radial-gradient(circle, #ffeaa7 0%, #ffd700 40%, transparent 70%);
@@ -740,7 +764,7 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
     20px -6px 0 0 #ffeaa7,
     -8px 10px 0 0 #fff8dc,
     15px 14px 0 0 #ffd700;
-  animation: sparkle 2s infinite ease-in-out;
+  animation: sparkle 3s infinite ease-in-out;
 }
 
 /* oben rechts */
@@ -778,6 +802,14 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 
 
 
+/* Kontaktformular - Ohne Hubspot Premium kaum Styling */
+.hs-form-frame {
+  background-color: #f5f5fa; /* hell, neutral */
+  border-radius: 15px;
+  margin-top: 4vh;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
 
 
 
@@ -1103,6 +1135,63 @@ p{ font-size: clamp(1.0rem, 1.5vw + 0.8rem, 1.3rem); }
 .agb {
   display: block;
 }
+
+
+/* Background Animation */
+/* Dezente, aber sichtbare Micro-Lights */
+.bg-lights {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* einzelne Lichtflecken */
+.bg-lights .light {
+  position: absolute;
+  width: 20vw;                 /* etwas größer */
+  height: 20vw;
+  background: radial-gradient(circle,
+              rgba(107, 101, 99, 0.1) 0%,   /* Coral-Ton, deutlich sichtbarer */
+              rgba(78, 73, 72, 0) 75%);
+  opacity: 0;
+  filter: blur(18px);          /* weicher Glow */
+  mix-blend-mode: screen;
+  animation: lightFloat 10s ease-in-out infinite;
+}
+
+/* verteilt über die Seite */
+.bg-lights .light:nth-child(1) { top: 12%; left: 18%; animation-delay: 0s; }
+.bg-lights .light:nth-child(2) { top: 30%; left: 72%; animation-delay: 2s; }
+.bg-lights .light:nth-child(3) { top: 55%; left: 12%; animation-delay: 5s; }
+.bg-lights .light:nth-child(4) { top: 12%; left: 20%; animation-delay: 7s; }
+.bg-lights .light:nth-child(5) { top: 22%; left: 85%; animation-delay: 6s; }
+.bg-lights .light:nth-child(6) { top: 62%; left: 30%; animation-delay: 5s; }
+.bg-lights .light:nth-child(7) { top: 42%; left: 35%; animation-delay: 3s; }
+
+
+@keyframes lightFloat {
+  0%, 60%, 100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  70% {
+    opacity: 0.35;             /* Peak – hier wird's sichtbar */
+    transform: translate(10px, -10px);
+  }
+  80% {
+    opacity: 0.20;
+    transform: translate(22px, -18px);
+  }
+  90% {
+    opacity: 0.08;
+    transform: translate(30px, -25px);
+  }
+}
+
+
+
 
 
 
