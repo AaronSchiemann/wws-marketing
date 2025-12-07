@@ -75,7 +75,13 @@
         </div>
         <div class="formularRechts">
           <h3 data-text="Oder benutzen Sie unser Kontaktformular!">Oder benutzen Sie unser <span class="text-shadow">Kontaktformular!</span></h3>
-          <form action="https://zysaron.com/send-contact.php" method="POST" class="kontaktFormular">
+          <form id="kontaktFormular" action="https://zysaron.com/send-contact.php" method="POST" class="kontaktFormular">
+
+            <div style="display:none;">
+              <label for="website">Bitte dieses Feld NICHT ausfüllen</label>
+              <input type="text" name="website" id="website" autocomplete="off">
+            </div>
+
             <label for="name">Name</label>
             <input type="text" name="Name" id="name" placeholder="Max Mustermann" required>
 
@@ -91,7 +97,7 @@
             <label for="email">E-Mail-Adresse</label>
             <input type="email" name="Email" id="email" placeholder="max.mustermann@beispiel.de" required>
 
-            <label for="message">Was möchten Sie uns mitteilen?</label>
+            <label for="message">Ihre Nachricht an uns</label>
             <textarea name="Nachricht" id="message" cols="30" rows="3" maxlength="500"></textarea>
 
             <div class="datenschutz-checkbox">
@@ -105,6 +111,10 @@
             <div class="btns-row">
               <button type="submit">Formular absenden</button>
             </div>
+
+            <!-- Platz für Rückmeldung -->
+            <p id="formStatus" class="form-status"></p>
+
           </form>
         </div>
       </section>
@@ -156,5 +166,49 @@
       </nav>
     </div>
   </footer>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("kontaktFormular");
+    const statusEl = document.getElementById("formStatus");
+
+    if (!form) return;
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault(); // Verhindert Seitenwechsel
+
+      if (statusEl) {
+        statusEl.textContent = "Bitte warten...";
+        statusEl.classList.remove("success", "error");
+      }
+
+      const formData = new FormData(form);
+
+      fetch("https://zysaron.com/send-contact.php", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "Accept": "application/json"
+        }
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          statusEl.textContent = "Vielen Dank! Ihre Nachricht wurde erfolgreich versendet.";
+          statusEl.classList.add("success");
+          form.reset();
+        } else {
+          statusEl.textContent = data.message || "Es ist ein Fehler aufgetreten.";
+          statusEl.classList.add("error");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        statusEl.textContent = "Technischer Fehler. Bitte später erneut versuchen.";
+        statusEl.classList.add("error");
+      });
+    });
+  });
+  </script>
 </body>
 </html>
