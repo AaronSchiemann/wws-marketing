@@ -56,14 +56,57 @@
 
   <main>
     <div class="container">
-      <section>
-        <h1 class="gradient-header" data-text="WWS-Marketing">
-          <span class="text-shadow">WWS Marketing Kontakt</span>
-        </h1>
+      <h2 class="text-shadow" data-text="Kontaktieren Sie WWS Marketing">WWS Marketing Kontakt</h2>
+      <h3>Wenige klicks vom Erfolg entfernt!</h3>
+      
+      <section class="kontaktformularWrapper">
+        <div class="formularLinks">
+          <h3 data-text="Kontaktieren Sie uns direkt!"><span class="text-shadow">Kontaktieren</span> Sie uns direkt!</h3>
+          <p>Schreiben Sie uns gerne eine Nachricht - 
+            wir melden uns zeitnah und persönlich bei Ihnen. Gemeinsam bringen wir Ihr Projekt auf das nächste Level.</p>
+          <ul>
+            <li>Tel + WhatsApp: <a href="tel:01631983546">0163-1983546</a></li>
+            <li>E-Mail: <a href="mailto:info@wws-marketing.de">info@wws-marketing.de</a></li>
+          </ul>
+          <div class="hero-image">
+            <img class="block" src="img/wws-logo.webp" alt="SEO Platzhalter">
+          </div>
+          
+        </div>
+        <div class="formularRechts">
+          <h3 data-text="Oder benutzen Sie unser Kontaktformular!">Oder benutzen Sie unser <span class="text-shadow">Kontaktformular!</span></h3>
+          <form action="https://zysaron.com/send-contact.php" method="POST" class="kontaktFormular">
+            <label for="name">Name</label>
+            <input type="text" name="Name" id="name" placeholder="Max Mustermann" required>
 
+            <label for="firma">Firma</label>
+            <input type="text" name="Firma" id="firma" placeholder="Meine Firma">
 
-        <script src="https://js-eu1.hsforms.net/forms/embed/147214769.js" defer></script>
-        <div class="hs-form-frame" data-region="eu1" data-form-id="b744eee8-3f71-4595-b28b-fe309067022a" data-portal-id="147214769"></div>
+            <label for="telefon">Telefonnummer</label>
+            <input type="tel" name="Telefon" id="telefon" placeholder="+49 170 1234567">
+
+            <label for="webseite">Webseite</label>
+            <input type="url" name="Webseite" id="webseite" placeholder="https://www.ihre-webseite.de">
+
+            <label for="email">E-Mail-Adresse</label>
+            <input type="email" name="Email" id="email" placeholder="max.mustermann@beispiel.de" required>
+
+            <label for="message">Was möchten Sie uns mitteilen?</label>
+            <textarea name="Nachricht" id="message" cols="30" rows="3" maxlength="500"></textarea>
+
+            <div class="datenschutz-checkbox">
+              <label>
+                <input type="checkbox" name="datenschutz" required>
+                Ich bin mit der Verarbeitung meiner Daten einverstanden und habe die 
+                <a href="/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> gelesen.
+              </label>
+            </div>
+
+            <div class="btns-row">
+              <button type="submit">Formular absenden</button>
+            </div>
+          </form>
+        </div>
       </section>
     </div>
 

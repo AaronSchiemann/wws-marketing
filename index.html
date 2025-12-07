@@ -93,7 +93,7 @@
         </div>
       </section>
 
-      <section>
+      <section hidden>
         <div class="carousel-wrapper">
           <div class="carousel-inner" style="--quantity: 10;">
             <div class="carousel-card" style="--index: 0;--color-card: 142, 249, 252;">
@@ -151,6 +151,40 @@
           </div>
       </section>
     
+
+      <!-- Handy-Card -->
+      <section class="handyWrapper">
+        <div class="handyCard js-handy-toggle" role="button" aria-label="Vorher/Nachher anzeigen">
+          <div class="handyBtn1"></div>
+          <div class="handyBtn2"></div>
+          <div class="handyBtn3"></div>
+          <div class="handyBtn4"></div>
+
+          <div class="handyCardInt">
+            <div class="handyScreen">
+              <!-- Labels -->
+              <div class="handyLabel handyLabel-before">Ohne WWS Marketing</div>
+              <div class="handyLabel handyLabel-after">Mit WWS Marketing</div>
+
+              <!-- Klick-Hinweis -->
+              <div class="handyClickHint">Klick zum Wechseln</div>
+
+              <!-- Clip 1 -->
+              <div class="handyClip handyClipOne"></div>
+              <!-- Clip 2 -->
+              <div class="handyClip handyClipTwo"></div>
+            </div>
+          </div>
+
+          <div class="handyTop">
+            <div class="handyCamera">
+              <div class="handyCameraInt"></div>
+            </div>
+            <div class="handySpeaker"></div>
+          </div>
+        </div>
+      </section>
+
 
       <section>
         <div class="loading-text">
@@ -220,14 +254,13 @@
       </section>
 
 
-
-
       <section>
         <div>
           <button class="btn" onclick="window.location.href='/kontakt.html'">Termin vereinbaren</button>
         </div>
       </section>
     </div>
+
 
 
     <div>
@@ -279,5 +312,16 @@
   <script>
     document.getElementById('js-year').textContent = new Date().getFullYear();
   </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cards = document.querySelectorAll(".js-handy-toggle");
+
+    cards.forEach((card) => {
+      card.addEventListener("click", () => {
+        card.classList.toggle("is-after");
+      });
+    });
+  });
+</script>
 </body>
 </html>
