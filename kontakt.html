@@ -75,7 +75,7 @@
         </div>
         <div class="formularRechts">
           <h3 data-text="Oder benutzen Sie unser Kontaktformular!">Oder benutzen Sie unser <span class="text-shadow">Kontaktformular!</span></h3>
-          <form id="kontaktFormular" action="https://zysaron.com/send-contact.php" method="POST" class="kontaktFormular">
+          <form id="kontaktFormular" method="POST" class="kontaktFormular">
 
             <div style="display:none;">
               <label for="website">Bitte dieses Feld NICHT ausfüllen</label>
@@ -112,9 +112,8 @@
               <button type="submit">Formular absenden</button>
             </div>
 
-            <!-- Platz für Rückmeldung -->
+            <!-- Statusmeldung -->
             <p id="formStatus" class="form-status"></p>
-
           </form>
         </div>
       </section>
@@ -171,10 +170,13 @@
     const form = document.getElementById("kontaktFormular");
     const statusEl = document.getElementById("formStatus");
 
-    if (!form) return;
+    if (!form) {
+      console.error("Kontaktformular nicht gefunden (id=kontaktFormular).");
+      return;
+    }
 
     form.addEventListener("submit", (e) => {
-      e.preventDefault(); // Verhindert Seitenwechsel
+      e.preventDefault(); // Verhindert das normale Abschicken (kein Seitenwechsel)
 
       if (statusEl) {
         statusEl.textContent = "Bitte warten...";
@@ -204,7 +206,7 @@
       })
       .catch((error) => {
         console.error(error);
-        statusEl.textContent = "Technischer Fehler. Bitte später erneut versuchen.";
+        statusEl.textContent = "Technischer Fehler. Bitte versuchen Sie es später erneut.";
         statusEl.classList.add("error");
       });
     });
